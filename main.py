@@ -20,9 +20,25 @@ if __name__ == "__main__":
 
     news_sites_choices = list(config() ['news_sites'].keys())
     parser.add_argument('news_site',
+    articles = []
+    for link in homepage.article_links:
+        #print(link)
+        article = _fetch_article(news_site_uid, host, link)
+
+        if article:
+            logger.info('Article fetched!!')
+            articles.append(articles)
+            print(article.title)
+
+    print(len(articles))
+
+
                         help='The news site that you want to scrape',
                         type=str,
                         choices=news_sites_choices)
+    
+    
+
 
 args = parser.parse_args()
 _news_scraper(args.news_site)
