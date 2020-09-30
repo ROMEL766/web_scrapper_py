@@ -1,4 +1,6 @@
 import argparse
+import csv
+import datetime
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -33,6 +35,20 @@ if __name__ == "__main__":
     print(len(articles))
 
 
+def _save_articles(news_site_uid, articles):
+    now = datetime.datetime.now().strftime('%Y_%n_%d')
+    out_file_name = f'{news_site_uid}_{now}_article.csv'
+
+    csv_headers = list(filter(lambda property: not property.startswith('_'), dir(articles[0])))
+
+    with open(out_file_name, mode='w+') as f:
+        writer = csv.writer(r)
+        writer.writerow(csv_headers)
+        
+        for article in articles:
+            row = [str(getattr(article, prop)) for prop in csv_headers]
+            writer.writerow(row)
+                                    
                         help='The news site that you want to scrape',
                         type=str,
                         choices=news_sites_choices)
